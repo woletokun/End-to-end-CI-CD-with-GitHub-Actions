@@ -1,10 +1,12 @@
-# This workflow deploys code to production when a version tag (v*) is pushed
+# This workflow deploys code to production when a version tag (v*) is pushed or direct push to production branch (master)
 # It includes building the project before deploying
 
 name: Deploy to Production
 
 on:
   push:
+    branches:
+      - master
     tags:
       - 'v*'  # Trigger only on version tags like v1.0.0
 
