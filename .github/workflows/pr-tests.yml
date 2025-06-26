@@ -1,0 +1,34 @@
+# This workflow runs linting and tests whenever a pull request is made to the `main` branch
+
+name: PR Linting and Testing
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      # Step 3: Install project dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Step 4: Run linter to check code quality
+      - name: Run ESLint
+        run: npm run lint
+
+      # Step 5: Run unit tests
+      - name: Run Unit Tests
+        run: npm run test

@@ -1,0 +1,36 @@
+# This workflow deploys code to production when a version tag (v*) is pushed
+# It includes building the project before deploying
+
+name: Deploy to Production
+
+on:
+  push:
+    tags:
+      - 'v*'  # Trigger only on version tags like v1.0.0
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Deploy to Production Server
+        env:
+          PROD_KEY: ${{ secrets.PROD_KEY }}
+          PROD_SERVER: ${{ secrets.PROD_SERVER }}
+        run: |
+          chmod +x ./scripts/deploy.sh
+          ./scripts/deploy.sh production

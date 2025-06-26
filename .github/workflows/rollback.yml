@@ -1,0 +1,25 @@
+# This workflow can be triggered manually to rollback an environment
+# Useful for quick fixes if a deployment fails
+
+name: Rollback Deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      env:
+        description: "Environment to rollback (e.g. staging, production)"
+        required: true
+        default: "production"
+
+jobs:
+  rollback:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run rollback script
+        env:
+          ENVIRONMENT: ${{ github.event.inputs.env }}
+          SERVER: ${{ secrets[format('{0}_SERVER', github.event.inputs.env)] }}
+        run: |
+          chmod +x ./scripts/rollback.sh
+          ./scripts/rollback.sh ${{ github.event.inputs.env }}
