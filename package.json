@@ -1,0 +1,26 @@
+{
+  "name": "ci-cd-with-git-action",
+  "version": "1.0.0",
+  "description": "End-to-end CI/CD with GitHub Actions",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint .",
+    "ci-test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/woletokun/End-to-end-CI-CD-with-GitHub-Actions.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/woletokun/End-to-end-CI-CD-with-GitHub-Actions/issues"
+  },
+  "homepage": "https://github.com/woletokun/End-to-end-CI-CD-with-GitHub-Actions#readme",
+  "devDependencies": {
+    "eslint": "^9.29.0",
+    "jest": "^30.0.3"
+  }
+}
