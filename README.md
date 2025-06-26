@@ -1,117 +1,108 @@
-# CI/CD Pipeline Documentation
+# CI/CD Pipeline with GitHub Actions
 
-## 📦 Project Overview
-
-This project demonstrates a **real-world, production-ready CI/CD pipeline** using **GitHub Actions**. It simulates deployments to `staging` and `production` environments, includes linting, testing, and rollback mechanisms — aligning with DevOps best practices.
+This repository demonstrates a professional-grade **CI/CD pipeline** implementation using **GitHub Actions**. It supports multiple environments, automated quality checks, and a safe rollback strategy — all in a real-world DevOps scenario.
 
 ---
 
-## 🔧 Workflows Summary
+## 🚀 Features
 
-### 1. **PR Linting and Testing**
-
-* **File:** `.github/workflows/lint-test.yml`
-* **Trigger:** On `pull_request` to `main`
-* **Purpose:**
-
-  * Run ESLint for code quality
-  * Run unit tests
-
-### 2. **Deploy to Staging**
-
-* **File:** `.github/workflows/deploy-staging.yml`
-* **Trigger:** On push to `staging` branch
-* **Purpose:**
-
-  * Install dependencies
-  * Build the project
-  * Deploy to staging server using `scripts/deploy.sh`
-
-### 3. **Deploy to Production**
-
-* **File:** `.github/workflows/deploy-production.yml`
-* **Trigger:**
-
-  * On push of version tag (e.g., `v1.0.0`), **OR**
-  * On direct push to the `master` branch
-
-> Best practice recommends using **version tags** (`v*`) to control production releases.
-
-* **Purpose:**
-
-  * Install dependencies
-  * Build the project
-  * Deploy to production server using `scripts/deploy.sh`
-
-### 4. **Rollback Workflow**
-
-* **File:** `.github/workflows/rollback.yml`
-* **Trigger:** Manual via GitHub UI
-* **Input:** `env` (either `staging` or `production`)
-* **Purpose:**
-
-  * Run `scripts/rollback.sh` to revert to a previous version
+* ✅ Lint and unit test on every pull request
+* ✅ Automatic deployment to **Staging** on `staging` branch push
+* ✅ Automatic deployment to **Production** on `master` push or version tag (`v*`)
+* ✅ Secure environment-specific deploys using GitHub secrets
+* ✅ Manual rollback workflow to staging or production
 
 ---
 
-## 🛠 Environment Configuration
+## 🔧 GitHub Workflows
 
-Secrets required in the GitHub repository:
-
-| Secret Name      | Description                     |
-| ---------------- | ------------------------------- |
-| `STAGING_SERVER` | IP or host of staging server    |
-| `STAGING_KEY`    | SSH private key for staging     |
-| `PROD_SERVER`    | IP or host of production server |
-| `PROD_KEY`       | SSH private key for production  |
-
-> Note: In this project simulation, these are mocked or referenced but not connected to real environments.
+| Workflow                | Trigger                      | Purpose                        |
+| ----------------------- | ---------------------------- | ------------------------------ |
+| `lint-test.yml`         | Pull request to `main`       | Run linter and unit tests      |
+| `deploy-staging.yml`    | Push to `staging`            | Build and deploy to staging    |
+| `deploy-production.yml` | Push to `master` or `v*` tag | Build and deploy to production |
+| `rollback.yml`          | Manual (`workflow_dispatch`) | Rollback last release          |
 
 ---
 
-## 🚀 Deployment Strategy
+## 🛠 Environment Secrets
 
-### Staging Deployment
+Set the following secrets in the GitHub repository settings:
 
-* Triggered by pushing code to `staging` branch.
-* Verifies code quality and functionality before production.
+```text
+STAGING_SERVER  # Host/IP of staging environment
+STAGING_KEY     # SSH key for staging
+PROD_SERVER     # Host/IP of production environment
+PROD_KEY        # SSH key for production
+```
 
-### Production Deployment
-
-* Triggered by:
-
-  * Pushing a version tag (e.g., `v1.0.0`), OR
-  * Pushing directly to the `master` branch
-
-> Best practice recommends using tags (`v*`) to control production releases.
-
-### Manual Rollback
-
-* Triggered manually through GitHub Actions UI.
-* Accepts input for `env` to specify rollback target.
-* Executes a shell script (`rollback.sh`) with proper environment context.
+> Secrets are used securely in deployment workflows via `${{ secrets.<NAME> }}`.
 
 ---
 
-## ✅ Evaluation Criteria Coverage
+## ⚙️ Usage
 
-| Evaluation Criteria         | Covered | Notes                            |
-| --------------------------- | ------- | -------------------------------- |
-| Pipeline automation quality | ✅       | Fully automated workflows        |
-| Testing integration         | ✅       | Runs tests on pull requests      |
-| Deployment reliability      | ✅       | Tag and branch-based triggers    |
-| Configuration management    | ✅       | Environment secrets used         |
-| Documentation completeness  | ✅       | This document + scripts provided |
+### 📥 Clone the Repo
+
+```bash
+git clone https://github.com/your-username/your-repo.git
+cd your-repo
+```
+
+### 🔍 Create a Feature Branch
+
+```bash
+git checkout -b feature/my-feature
+```
+
+### 🧪 Open a Pull Request
+
+When a PR is opened against `main`, GitHub Actions will:
+
+* Run ESLint (`npm run lint`)
+* Run unit tests (`npm run test`)
+
+### 🚀 Deploy to Staging
+
+```bash
+git checkout staging
+git push origin staging
+```
+
+### 🚀 Deploy to Production
+
+Via tag:
+
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+Or via direct push to master:
+
+```bash
+git checkout master
+# make changes
+git push origin master
+```
+
+> ⚠️ Tagging (`v*`) is preferred for production releases.
+
+### 🔄 Manual Rollback
+
+Go to **GitHub → Actions → Rollback Deployment → Run workflow**
+
+* Choose `staging` or `production`
 
 ---
 
-## 📄 Directory Structure
+## 🗂 Project Structure
 
 ```bash
 .github/workflows/
-├── deploy-production.yml
-├── deploy-staging.yml
 ├── lint-test.yml
+├── deploy-staging.yml
+├── deploy-production.yml
 └── rollback.yml
 
 scripts/
@@ -120,41 +111,13 @@ scripts/
 
 package.json
 package-lock.json
-README.md (this file or linked)
+README.md
 ```
 
 ---
 
-## 📜 How to Use
+## ✅ Built By
 
-### Trigger Deployment to Staging
+**Oyewole Olatokun** — [@ToksTech](https://github.com/ToksTokun)
 
-```bash
-git checkout staging
-git push origin staging
-```
-
-### Trigger Deployment to Production
-
-```bash
-git tag v1.0.0
-git push origin v1.0.0
-
-# OR
-
-git push origin master
-```
-
-### Trigger Manual Rollback
-
-* Go to GitHub → Actions → **Rollback Deployment**
-* Click **Run Workflow**
-* Input `staging` or `production`
-
----
-
-## 📌 Conclusion
-
-This project simulates a complete, production-quality CI/CD pipeline using GitHub Actions — suitable for any professional DevOps environment or team workflow.
-
-> Designed and implemented by Oyewole Olatokun (@ToksTech)
+This is a simulated but production-aligned implementation of CI/CD principles using GitHub Actions. Perfect for team collaboration, automation, and professional DevOps standards.
