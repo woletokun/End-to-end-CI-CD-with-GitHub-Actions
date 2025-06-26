@@ -4,8 +4,9 @@ name: PR Linting and Testing
 
 on:
   pull_request:
-    branches: [main]
-
+    branches:
+      - master
+      - staging
 jobs:
   lint-and-test:
     runs-on: ubuntu-latest
