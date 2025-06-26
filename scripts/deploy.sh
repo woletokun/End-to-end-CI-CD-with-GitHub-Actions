@@ -1,16 +1,18 @@
 #!/bin/bash
 
-# Get the environment name from the argument
+# Simulated deployment script (training version)
+
 ENV=$1
 
-# Check environment and run deployment accordingly
+echo "Simulating deployment to $ENV environment..."
+
 if [ "$ENV" == "staging" ]; then
-  echo "Deploying to Staging..."
-  scp -i "$STAGING_KEY" -r ./dist user@$STAGING_SERVER:/var/www/staging
+  echo "✅ This would deploy to STAGING at $STAGING_SERVER using $STAGING_KEY"
 elif [ "$ENV" == "production" ]; then
-  echo "Deploying to Production..."
-  scp -i "$PROD_KEY" -r ./dist user@$PROD_SERVER:/var/www/production
+  echo "✅ This would deploy to PRODUCTION at $PROD_SERVER using $PROD_KEY"
 else
   echo "❌ Unknown environment: $ENV"
   exit 1
 fi
+
+echo "🎉 Deployment simulation complete for $ENV"
